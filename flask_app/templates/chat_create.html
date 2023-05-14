@@ -1,0 +1,107 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>Chat with an AI!</h1>
+<br>
+{% if next_use %}
+<p>Out of uses! Come back at {{next_use.strftime("%B %d, %Y at %H:%M:%S")}}</p>
+{% else %}
+<p>Uses left: {{ uses }}</p>
+{% endif %}
+
+{% if not current_context %}
+{% if not next_use %}
+<p>Describe how this AI will behave. (Ex. You are a 17th century poet who responds to everything with poetry)</p>
+<div class="row">
+    <div class="col">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="">
+            {{ init_form.csrf_token }}
+            
+            <div class="form-group">
+                {{ init_form.prompt.label(class="form-control-label") }}
+                {{ init_form.prompt(class="form-control form-control-md bg-dark text-white") }}
+        
+                {% if init_form.prompt.errors %}
+                <div class="alert alert-warning" role="alert">
+                  {% for error in init_form.prompt.errors %}
+                  <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ init_form.submit(class="form-control form-control-md bg-dark text-white") }}
+            </div> 
+        </form>
+    </div>
+</div>
+{% endif %}
+{% else %}
+<p><a href="{{ url_for('chat.end_chat') }}">End Chat</a></p>
+<p>Chat with the AI you created! ({{ current_context.context }})</p>
+<div class="row">
+    <div class="col">
+        <div class="chat-box" id="chat-box">
+            {% for message in current_messages%}
+            <p><b>{{ 'You' if message.role == 'user' else 'Bot' }}</b>: {{ message.content }}</p>
+            {% endfor %}
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% if not next_use %}
+        <form method="POST" action="" id="form">
+            {{ chat_form.csrf_token }}
+            
+            <div class="form-group">
+                {{ chat_form.message.label(class="form-control-label") }}
+                {{ chat_form.message(class="form-control form-control-md bg-dark text-white", id="chat-input") }}
+        
+                {% if chat_form.message.errors %}
+                <div class="alert alert-warning" role="alert">
+                  {% for error in chat_form.message.errors %}
+                  <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group" id="submit-container">
+                {{ chat_form.submit(class="form-control form-control-md bg-dark text-white") }}
+            </div> 
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+    window.onload = function() {
+        document.getElementById('chat-input').value = '';
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+        window.scrollTo(0, document.body.scrollHeight);
+        document.getElementById('form').onsubmit = function() {
+            {# I couldn't get bootstrap to work here for some reason #}
+            document.getElementById('submit-container').innerHTML = '<div class="form-control form-control-md bg-dark text-white"><div class="loading mx-auto"></div></div>';
+        };
+    };
+</script>
+{% endif %}
+
+{% endblock %}

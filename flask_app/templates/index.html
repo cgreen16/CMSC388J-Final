@@ -1,0 +1,10 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>The AI Hub</h1>
+<p>A space to create and share AI created images and chats using OpenAI's API and to view other users' creations.</p>
+<p>Each user gets to create {{images}} images and send {{chats}} chat messages per day.</p>
+<p>Register and create images <a href="{{ url_for('image.image_create') }}">here</a> and send chats <a href="{{ url_for('chat.chat_create') }}">here</a>!</p>
+<footer>By: Carl Green</footer>
+
+{% endblock %}

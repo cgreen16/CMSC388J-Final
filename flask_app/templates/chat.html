@@ -1,0 +1,32 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>Chat with a bot!</h1>
+<p>Create your own <a href="{{ url_for('chat.chat_create') }}">HERE!</a></p>
+
+{% if username %}
+<p>Chats created by user {{username}}:</p>
+{% else %}
+<p>Latest chats:</p>
+{% endif %}
+<br>
+{% if chats %}
+{% for chat in chats %}
+
+<div class="chat-gallery gallery">
+    <div class="chat-box">
+        {% for message in chat[1]%}
+        <p><b>{{ chat[0].creator.username if message.role == 'user' else 'Bot' }}</b>: {{ message.content }}</p>
+        {% endfor %}
+    </div>
+    <div class="desc"><b>{{chat[0].context}}</b></div>
+    <div class="desc">By: <a href="{{ url_for('user.user_page', username=chat[0].creator.username) }}">{{chat[0].creator.username}}</a> {% if chat[0].creator.username == current_user.username %}(<a href="{{ url_for('chat.resume_chat', id=chat[0].uuid) }}">resume</a>){% endif %}</div>
+    <div class="desc">Created: {{chat[0].created.strftime("%B %d, %Y at %H:%M:%S")}}</div>
+</div>
+
+{% endfor %}
+{% else %}
+<p>Oops! Nothing yet!</p>
+{% endif %}
+
+{% endblock %}

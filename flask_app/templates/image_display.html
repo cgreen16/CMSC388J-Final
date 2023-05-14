@@ -1,0 +1,10 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>{{image[1]}}</h1>
+<h3>By: <a href="{{ url_for('user.user_page', username=image[0]) }}">{{image[0]}}</a></h3>
+<h4>Created: {{image[3].strftime("%B %d, %Y at %H:%M:%S")}}</h4>
+
+<img src="data:image/png;base64,{{image[2]}}" alt="{{image[1]}}" width="1024" height="1024">
+
+{% endblock %}

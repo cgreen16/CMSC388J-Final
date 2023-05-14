@@ -1,0 +1,54 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>Create images with just a prompt!</h1>
+<br>
+{% if next_use %}
+<p>Out of uses! Come back at {{next_use.strftime("%B %d, %Y at %H:%M:%S")}}</p>
+{% else %}
+<p>Uses left: {{ uses }}</p>
+<div class="row">
+    <div class="col">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="" id="form">
+            {{ form.csrf_token }}
+            
+            <div class="form-group">
+                {{ form.prompt.label(class="form-control-label") }}
+                {{ form.prompt(class="form-control form-control-md bg-dark text-white") }}
+        
+                {% if form.prompt.errors %}
+                <div class="alert alert-warning" role="alert">
+                  {% for error in form.prompt.errors %}
+                  <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group" id="submit-container">
+                {{ form.submit(class="form-control form-control-md bg-dark text-white") }}
+            </div> 
+        </form>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+    window.onload = function() {
+        document.getElementById('form').onsubmit = function() {
+            {# I couldn't get bootstrap to work here for some reason #}
+            document.getElementById('submit-container').innerHTML = '<div class="form-control form-control-md bg-dark text-white"><div class="loading mx-auto"></div></div>';
+        };
+    };
+</script>
+{% endif %}
+
+{% endblock %}

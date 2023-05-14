@@ -1,0 +1,55 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>Hey, {{ current_user.username }}!</h3>
+        <br>
+        <p>Remaining image tokens: {{image_uses}}</p>
+        <p>Remaining chat tokens: {{chat_uses}}</p>
+        {% if next_image_use %}
+        <p>Next image token generation: {{next_image_use.strftime("%B %d, %Y at %H:%M:%S")}}</p>
+        {% endif %}
+        {% if next_chat_use %}
+        <p>Next chat token generation: {{next_chat_use.strftime("%B %d, %Y at %H:%M:%S")}}</p>
+        {% endif %}
+        <p><a href="{{ url_for('image.image', username=current_user.username) }}">Your images</a></p>
+        <p><a href="{{ url_for('chat.chat', username=current_user.username) }}">Your chats</a></p>
+
+        <div class="row">
+            <div class="col">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="">
+                    {{ form.csrf_token }}
+                    
+                    <div class="form-group">
+                        {{ form.username.label(class="form-control-label") }}
+                        {{ form.username(class="form-control form-control-md bg-dark text-white w-50") }}
+                
+                        {% if form.username.errors %}
+                        <div class="alert alert-warning" role="alert">
+                          {% for error in form.username.errors %}
+                          <span>{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+        
+                    <div class="form-group">
+                        {{ form.submit(class="form-control form-control-md bg-dark text-white w-50") }}
+                    </div> 
+                </form>
+            </div>
+        </div>
+
+        <p><a href="{{ url_for('user.logout') }}">Log Out</a></p>
+    </div>
+</div>  
+{% endblock %}>

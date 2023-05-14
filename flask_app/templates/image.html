@@ -1,0 +1,30 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>Images with just a prompt!</h1>
+<p>Create your own <a href="{{ url_for('image.image_create') }}">HERE!</a></p>
+
+{% if username %}
+<p>Images created by user {{username}}:</p>
+{% else %}
+<p>Latest user generated images:</p>
+{% endif %}
+<br>
+
+{% if images %}
+{% else %}
+<p>Oops! Nothing yet!</p>
+{% endif %}
+{% for image in images %}
+
+<div class="gallery">
+    <a href="{{ url_for('image.image_display', id=image[4]) }}">
+        <img src="data:image/png;base64,{{image[2]}}" alt="{{image[0]}}" width="250" height="250">
+    </a>
+    <div class="desc"><b>{{image[1]}}</b></div>
+    <div class="desc">By: <a href="{{ url_for('user.user_page', username=image[0]) }}">{{image[0]}}</a></div>
+    <div class="desc">Created: {{image[3].strftime("%B %d, %Y at %H:%M:%S")}}</div>
+</div>
+
+{% endfor %}
+{% endblock %}

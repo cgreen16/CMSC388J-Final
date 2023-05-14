@@ -1,0 +1,116 @@
+body {
+  background: #272727;
+}
+
+.navMenu {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.navMenu a {
+  color: #f6f4e6;
+  text-decoration: none;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: inline-block;
+  width: 80px;
+  transition: all 0.2s ease-in-out;
+}
+
+.navMenu a:hover {
+  color: #fddb3a;
+}
+
+.container {
+    color: #f6f4e6;
+    position: relative;
+    top: 75px;
+}
+
+.centered {
+    text-align:center;
+}
+
+.navDiv {
+    height:5px;
+    border-width:0;
+    background-color:#00A4BD;
+}
+
+.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+    height: 325px;
+}
+
+.chat-gallery {
+  width: 400px;
+}
+
+.gallery:hover {
+    border: 1px solid #777;
+}
+
+.gallery img {
+    width: 100%;
+    height: auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+.gallery div {
+  width: 97%;
+}
+
+.desc {
+    padding: 0px;
+    text-align: center;
+}
+
+.chat-box {
+  overflow-y: scroll;
+  width: 100%;
+  height: 200px;
+  word-wrap: break-word;
+  border: 1px solid #ccc;
+  margin: 5px;
+  padding: 5px;
+}
+
+.chat-box p {
+  white-space: pre-line;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+
+.loading {
+  border: 2px solid #ccc;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border-top-color: #1ecd97;
+  border-left-color: #1ecd97;
+  animation: spin 1s infinite ease-in;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

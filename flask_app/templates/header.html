@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block header %}
+<nav class="navMenu">
+    <a href="{{ url_for('main.index') }}">Home</a>
+    <a href="{{ url_for('chat.chat') }}">Chat</a>
+    <a href="{{ url_for('image.image') }}">Image</a>
+    {% if current_user.username %}
+    <a href="{{ url_for('user.account') }}">Account</a>
+    {% else %}
+    <a href="{{ url_for('user.login') }}">Login</a>
+    {% endif %}
+</nav>
+
+<div class="container">
+    <hr class="navDiv">
+    {% block content %}
+    {% endblock %}
+</div>
+{% endblock %}
